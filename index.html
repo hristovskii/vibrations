@@ -19,6 +19,7 @@
                 navigator.vibrate(ms);
             } else if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
                 triggerHapticFeedback();
+                navigator.vibrate(ms);
             }
         }
 
@@ -27,6 +28,7 @@
                 navigator.vibrate([300, 100, 300, 100, 300]);
             } else if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
                 triggerHapticFeedback();
+                navigator.vibrate([300, 100, 300, 100, 300]);
             }
         }
 
