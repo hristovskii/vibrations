@@ -1,0 +1,85 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Vibration API</title>
+    <link rel="stylesheet" href="/assets/dcode.css">
+    <link rel="shortcut icon" href="/assets/favicon.ico">
+</head>
+<body>
+    <h1>The Vibration API</h1>
+    <h3>Mobile haptics</h3>
+    <button class="button" onclick="vibrate(50)">Vibrate Single</button>
+    <button class="button" onclick="vibratePattern()">Vibrate Pattern</button>
+
+    <script>
+        function vibrate(ms) {
+            if ('vibrate' in navigator) {
+                navigator.vibrate(ms);
+            } else if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+                triggerHapticFeedback();
+            }
+        }
+
+        function vibratePattern() {
+            if ('vibrate' in navigator) {
+                navigator.vibrate([300, 100, 300, 100, 300]);
+            } else if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+                triggerHapticFeedback();
+            }
+        }
+
+        function triggerHapticFeedback() {
+            document.body.classList.add('shake');
+            setTimeout(() => {
+                document.body.classList.remove('shake');
+            }, 300);
+        }
+    </script>
+
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            transition: transform 0.1s ease-in-out;
+        }
+        
+        .shake {
+            animation: shake 0.3s ease-in-out;
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+        .button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</body>
+</html>
