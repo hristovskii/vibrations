@@ -1,9 +1,9 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Vibration API</title>
+    <title>The Vibration API and Audio</title>
     <link rel="stylesheet" href="/assets/dcode.css">
     <link rel="shortcut icon" href="/assets/favicon.ico">
 </head>
@@ -13,6 +13,17 @@
     <button class="button" onclick="vibrate(50)">Vibrate Single</button>
     <button class="button" onclick="vibratePattern()">Vibrate Pattern</button>
 
+    <h1>The Audio API</h1>
+    <h2>Audio</h2>
+    <audio id="audio" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" controls></audio> <br/>
+    
+    <button id="playPause">Play/Pause</button>
+    <div id="NeMeGibajMene" style="display: flex; align-items: center; gap: 10px;">
+        <button id="lowerVolume">Lower Volume</button>
+        <p id="volumeDisplay">Volume: 100%</p>
+        <button id="higherVolume">Higher Volume</button>
+    </div>
+    
     <script>
         function vibrate(ms) {
             if ('vibrate' in navigator) {
@@ -38,6 +49,46 @@
                 document.body.classList.remove('shake');
             }, 300);
         }
+
+        const audio = document.getElementById("audio");
+        const playPauseBtn = document.getElementById("playPause");
+        const lowerVolumeBtn = document.getElementById("lowerVolume");
+        const higherVolumeBtn = document.getElementById("higherVolume");
+        const volumeDisplay = document.getElementById("volumeDisplay");
+
+        function updateVolumeDisplay() {
+            volumeDisplay.textContent = `Volume: ${Math.round(audio.volume * 100)}%`;
+        }
+
+        playPauseBtn.addEventListener("click", () => {
+            if (audio.paused) {
+                audio.play();
+                playPauseBtn.textContent = "Pause";
+            } else {
+                audio.pause();
+                playPauseBtn.textContent = "Play";
+            }
+        });
+
+        lowerVolumeBtn.addEventListener("click", () => {
+            if (audio.volume > 0.1) {
+                audio.volume -= 0.1;
+            } else {
+                audio.volume = 0; // Mute if below 0.1
+            }
+            updateVolumeDisplay();
+        });
+
+        higherVolumeBtn.addEventListener("click", () => {
+            if (audio.volume < 0.9) {
+                audio.volume += 0.1;
+            } else {
+                audio.volume = 1; // Max volume
+            }
+            updateVolumeDisplay();
+        });
+
+        updateVolumeDisplay();
     </script>
 
     <style>
@@ -51,8 +102,9 @@
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
             transition: transform 0.1s ease-in-out;
+            text-align: center;
         }
-        
+
         .shake {
             animation: shake 0.3s ease-in-out;
         }
@@ -64,11 +116,8 @@
             75% { transform: translateX(-5px); }
             100% { transform: translateX(0); }
         }
-
-        h1 {
-            margin-bottom: 20px;
-        }
-        .button {
+        
+        .button, button {
             padding: 10px 20px;
             margin: 10px;
             font-size: 16px;
@@ -79,7 +128,7 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
-        .button:hover {
+        .button:hover, button:hover {
             background-color: #0056b3;
         }
     </style>
