@@ -23,6 +23,16 @@
         <p id="volumeDisplay">Volume: 100%</p>
         <button id="higherVolume">Higher Volume</button>
     </div>
+
+
+    <h1>Saturation</h1>
+    <div id="NeMeGibajMene" style="display: flex; align-items: center; gap: 10px;">
+        
+    <button id="low-saturation-toggle">Toggle Low Saturation</button>
+
+    <button id="high-saturation-toggle">Toggle High Saturation</button>
+    </div>
+    <div id="color-container"></div>
     
     <script>
         function vibrate(ms) {
@@ -74,7 +84,7 @@
             if (audio.volume > 0.1) {
                 audio.volume -= 0.1;
             } else {
-                audio.volume = 0; // Mute if below 0.1
+                audio.volume = 0;
             }
             updateVolumeDisplay();
         });
@@ -83,12 +93,55 @@
             if (audio.volume < 0.9) {
                 audio.volume += 0.1;
             } else {
-                audio.volume = 1; // Max volume
+                audio.volume = 1;
             }
             updateVolumeDisplay();
         });
 
         updateVolumeDisplay();
+
+        let isHighSaturation = false; // Track the saturation state
+        let isLowSaturation = false;
+        const highSaturationLevel = 2.5; // High saturation level
+        const isLowSaturationLevel = 0.5; // Low saturation level
+
+        document.getElementById("low-saturation-toggle").addEventListener("click", function() {
+            if (isLowSaturation) {
+                document.body.style.filter = 'saturate(1)'; // Reset to normal saturation
+            } else {
+                document.body.style.filter = `saturate(${isLowSaturationLevel})`; // Apply high saturation
+            }
+            isLowSaturation = !isLowSaturation; // Toggle the state
+        });
+
+        document.getElementById("high-saturation-toggle").addEventListener("click", function() {
+            if (isHighSaturation) {
+                document.body.style.filter = 'saturate(1)'; // Reset to normal saturation
+            } else {
+                document.body.style.filter = `saturate(${highSaturationLevel})`; // Apply high saturation
+            }
+            isHighSaturation = !isHighSaturation; // Toggle the state
+        });
+
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        const colorContainer = document.getElementById('color-container');
+        for (let i = 0; i < 20; i++) {
+            const colorBox = document.createElement('div');
+            colorBox.className = 'color-box';
+            colorBox.style.backgroundColor = getRandomColor();
+            colorContainer.appendChild(colorBox);
+            if (i === 9) {
+            colorContainer.appendChild(document.createElement('br'));
+            }
+        }
     </script>
 
     <style>
@@ -103,6 +156,7 @@
             background-color: #f0f0f0;
             transition: transform 0.1s ease-in-out;
             text-align: center;
+            transition: filter 0.3s ease-in-out;
         }
 
         .shake {
@@ -130,6 +184,13 @@
         }
         .button:hover, button:hover {
             background-color: #0056b3;
+        }
+
+        .color-box {
+            width: 100px;
+            height: 100px;
+            display: inline-block;
+            margin: 10px;
         }
     </style>
 </body>
